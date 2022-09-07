@@ -1,12 +1,26 @@
-FROM lomot/minecraft-bedrock:1.19.20.02 as minebuilder
+ARG mcversion
+FROM lomot/minecraft-bedrock:${mcversion} as builder
 
-FROM 05jchambers/legendary-bedrock-container:latest
+FROM --platform=linux/arm64/v8 debian:buster-slim
 
 LABEL maintainer="Tristan Morgan <tristan.morgan@gmail.com>"
 LABEL Description="Minecraft Bedrock plus Box64"
 
-COPY --from=minebuilder /mcpe /mcpe
+ENV DEBIAN_FRONTEND noninteractive
+ENV DEBCONF_NONINTERACTIVE_SEEN true
 
+# Get Box64
+RUN apt update && apt install ca-certificates gpg libcurl4 -y
+ADD https://ryanfortner.github.io/box64-debs/box64.list /etc/apt/sources.list.d/box64.list
+ADD https://ryanfortner.github.io/box64-debs/KEY.gpg /tmp/KEY.gpg
+RUN cat /tmp/KEY.gpg | gpg --dearmor > /usr/share/keyrings/box64-debs-archive-keyring.gpg
+RUN apt update && apt install box64 -y && apt remove gpg -y
+
+# copy minecraft bedrock server
+RUN mkdir -p /lib64 && mkdir -p /lib/x86_64-linux-gnu
+COPY --from=builder /lib64 /lib64
+COPY --from=builder /lib/x86_64-linux-gnu /lib/x86_64-linux-gnu
+COPY --from=builder /mcpe /mcpe
 
 COPY script/docker-entrypoint.sh /mcpe/script/docker-entrypoint.sh
 
