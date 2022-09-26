@@ -1,4 +1,6 @@
 # bedrock-box
+[![Docker Image](https://img.shields.io/badge/docker-tristanmorgan%2Fbedrock--box-blue.svg)](https://hub.docker.com/r/tristanmorgan/bedrock-box/)
+
 A repackaging of [LomotHo/minecraft-bedrock](http://github.com/LomotHo/minecraft-bedrock/) but with Box64 emulation.
 
 ## Usage
