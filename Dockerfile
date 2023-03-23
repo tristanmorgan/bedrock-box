@@ -13,7 +13,7 @@ ENV DEBCONF_NONINTERACTIVE_SEEN true
 RUN apt-get update && apt-get install ca-certificates gpg libcurl4 -y
 ADD https://ryanfortner.github.io/box64-debs/box64.list /etc/apt/sources.list.d/box64.list
 ADD https://ryanfortner.github.io/box64-debs/KEY.gpg /tmp/KEY.gpg
-RUN cat /tmp/KEY.gpg | gpg --dearmor > /usr/share/keyrings/box64-debs-archive-keyring.gpg
+RUN cat /tmp/KEY.gpg | gpg --dearmor > /etc/apt/trusted.gpg.d/box64-debs-archive-keyring.gpg
 RUN apt-get update && apt-get install box64 -y && apt-get remove gpg -y && apt-get clean
 
 # copy minecraft bedrock server
