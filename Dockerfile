@@ -1,7 +1,7 @@
 ARG mcversion
 FROM lomot/minecraft-bedrock:${mcversion} as builder
 
-FROM --platform=linux/arm64/v8 debian:bullseye-slim
+FROM --platform=linux/arm64/v8 debian:bookworm-slim
 
 LABEL maintainer="Tristan Morgan <tristan.morgan@gmail.com>"
 LABEL Description="Minecraft Bedrock plus Box64"
