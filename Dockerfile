@@ -1,5 +1,5 @@
 ARG mcversion
-FROM lomot/minecraft-bedrock:${mcversion} as builder
+FROM lomot/minecraft-bedrock:${mcversion} as bedrock
 
 FROM --platform=linux/arm64/v8 debian:bookworm-slim
 
@@ -15,13 +15,12 @@ ADD https://ryanfortner.github.io/box64-debs/KEY.gpg /tmp/KEY.gpg
 RUN apt-get update && apt-get install ca-certificates gpg libcurl4 -y \
  && mv /tmp/box64.list /etc/apt/sources.list.d/box64.list \
  && cat /tmp/KEY.gpg | gpg --dearmor > /etc/apt/trusted.gpg.d/box64-debs-archive-keyring.gpg \
- && apt-get update && apt-get install box64-rpi4arm64 -y && apt-get remove gpg -y && apt autoremove -y && apt-get clean
+ && apt-get update && apt-get install box64-rpi4arm64 -y && apt-get remove gpg -y && apt-get autoremove -y && apt-get clean
 
 # copy minecraft bedrock server
-RUN mkdir -p /lib64 && mkdir -p /lib/x86_64-linux-gnu
-COPY --from=builder /lib64 /lib64
-COPY --from=builder /lib/x86_64-linux-gnu /lib/x86_64-linux-gnu
-COPY --from=builder /mcpe /mcpe
+COPY --from=bedrock /lib64 /lib64
+COPY --from=bedrock /lib/x86_64-linux-gnu /lib/x86_64-linux-gnu
+COPY --from=bedrock /mcpe /mcpe
 
 COPY script/docker-entrypoint.sh /mcpe/script/docker-entrypoint.sh
 
