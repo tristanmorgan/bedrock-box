@@ -18,8 +18,8 @@ RUN apt-get update && apt-get install ca-certificates gpg libcurl4 -y \
  && apt-get update && apt-get install box64-rpi4arm64 -y && apt-get remove gpg -y && apt-get autoremove -y && apt-get clean
 
 # copy minecraft bedrock server
-COPY --from=bedrock /lib64 /lib64
-COPY --from=bedrock /lib/x86_64-linux-gnu /lib/x86_64-linux-gnu
+COPY --from=bedrock /lib/x86_64-linux-gnu/libstdc++.so.6 /lib/x86_64-linux-gnu/
+COPY --from=bedrock /lib/x86_64-linux-gnu/libgcc_s.so.1 /lib/x86_64-linux-gnu/
 COPY --from=bedrock /mcpe /mcpe
 
 COPY script/docker-entrypoint.sh /mcpe/script/docker-entrypoint.sh
