@@ -1,13 +1,13 @@
 ARG mcversion
-FROM lomot/minecraft-bedrock:${mcversion} as bedrock
+FROM --platform=linux/amd64 lomot/minecraft-bedrock:${mcversion} AS bedrock
 
 FROM --platform=linux/arm64/v8 debian:bookworm-slim
 
 LABEL maintainer="Tristan Morgan <tristan.morgan@gmail.com>"
 LABEL Description="Minecraft Bedrock plus Box64"
 
-ENV DEBIAN_FRONTEND noninteractive
-ENV DEBCONF_NONINTERACTIVE_SEEN true
+ENV DEBIAN_FRONTEND=noninteractive
+ENV DEBCONF_NONINTERACTIVE_SEEN=true
 
 # Get Box64
 ADD https://ryanfortner.github.io/box64-debs/box64.list /tmp/box64.list
