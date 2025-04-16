@@ -1,4 +1,4 @@
-ARG mcversion
+ARG mcversion=1.21.73.01
 FROM --platform=linux/amd64 lomot/minecraft-bedrock:${mcversion} AS bedrock
 
 FROM --platform=linux/arm64/v8 debian:bookworm-slim
@@ -21,6 +21,7 @@ RUN apt-get update && apt-get install ca-certificates gpg libcurl4 libgcc-s1 -y 
 COPY --from=bedrock /mcpe /mcpe
 
 COPY script/docker-entrypoint.sh /mcpe/script/docker-entrypoint.sh
+COPY script/send-command /mcpe/script/send-command
 
 ENV SERVER_HOME="/mcpe" \
   SERVER_PATH="/mcpe/server" \
