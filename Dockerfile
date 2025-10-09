@@ -1,7 +1,7 @@
 ARG mcversion=1.21.73.01
 FROM --platform=linux/amd64 lomot/minecraft-bedrock:${mcversion} AS bedrock
 
-FROM --platform=linux/arm64/v8 debian:bookworm-slim
+FROM --platform=linux/arm64/v8 debian:stable-slim
 
 LABEL maintainer="Tristan Morgan <tristan.morgan@gmail.com>"
 LABEL Description="Minecraft Bedrock plus Box64"
